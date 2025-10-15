@@ -5,6 +5,7 @@ import { ChatInput } from "../components/ChatInput";
 import { ConversationSidebar, ConversationSummary } from "../components/ConversationSidebar";
 import { Message, MessageList } from "../components/MessageList";
 import { RoleSelector } from "../components/RoleSelector";
+import { PromptOptimizer } from "../components/PromptOptimizer";
 import { getApiBaseUrl, ChatStreamChunk } from "../lib/api";
 import { ROLE_PRESETS, RoleDefinition } from "../lib/roles";
 
@@ -41,6 +42,7 @@ export default function HomePage() {
   const [activeConversationId, setActiveConversationId] = useState<string>(() => conversations[0].id);
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [activeTool, setActiveTool] = useState<"prompt-optimizer" | null>(null);
 
   const activeConversation = useMemo(
     () => conversations.find((conversation) => conversation.id === activeConversationId) ?? conversations[0],
@@ -103,6 +105,10 @@ export default function HomePage() {
       ...conversation,
       useMemory: !conversation.useMemory
     }));
+  };
+
+  const handleToggleTool = (toolId: "prompt-optimizer") => {
+    setActiveTool((current) => (current === toolId ? null : toolId));
   };
 
   const handleSendMessage = async (content: string) => {
@@ -257,7 +263,18 @@ export default function HomePage() {
               Memory
             </label>
           </div>
+          <div className="tool-bar">
+            <span className="tool-bar-label">Tools</span>
+            <button
+              type="button"
+              className={`tool-button${activeTool === "prompt-optimizer" ? " active" : ""}`}
+              onClick={() => handleToggleTool("prompt-optimizer")}
+            >
+              Prompt optimizer
+            </button>
+          </div>
         </header>
+        {activeTool === "prompt-optimizer" && <PromptOptimizer apiBaseUrl={apiBaseUrl} />}
         <MessageList messages={activeConversation.messages} isStreaming={isStreaming} />
         {error && <p className="error">{error}</p>}
         <ChatInput disabled={isStreaming} onSubmit={handleSendMessage} />

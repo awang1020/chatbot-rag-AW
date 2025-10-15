@@ -5,6 +5,7 @@ from openai import AzureOpenAI
 
 from ..core.config import Settings
 from ..models.chat import ChatDelta, ChatRequest, Message
+from ..models.prompt import PromptOptimizationResponse
 from .memory import ConversationMemory
 
 
@@ -77,3 +78,37 @@ class ChatService:
             {"id": "data-analyst", "label": "Data Analyst"},
             {"id": "mentor", "label": "Career Mentor"},
         ]
+
+    def optimize_prompt(self, prompt: str) -> PromptOptimizationResponse:
+        if not prompt.strip():
+            raise ValueError("Prompt cannot be empty.")
+
+        response = self._client.chat.completions.create(
+            model=self._deployment,
+            temperature=0.4,
+            max_tokens=600,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You are an expert AI prompt engineer. Rewrite the provided prompt to be clear, "
+                        "actionable, and optimized for an AI assistant. Preserve the user's intent while "
+                        "adding helpful context or constraints if they are missing."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": prompt,
+                },
+            ],
+        )
+
+        if not response.choices:
+            raise ValueError("No optimization was generated.")
+
+        optimized = response.choices[0].message.content or ""
+        optimized = optimized.strip()
+        if not optimized:
+            raise ValueError("Optimized prompt was empty.")
+
+        return PromptOptimizationResponse(optimized_prompt=optimized)

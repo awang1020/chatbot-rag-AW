@@ -3,6 +3,7 @@ from fastapi.responses import StreamingResponse
 
 from ...core.config import get_settings
 from ...models.chat import ChatRequest
+from ...models.prompt import PromptOptimizationRequest
 from ...services.chat_service import ChatService
 from ...services.memory import ConversationMemory
 
@@ -38,3 +39,15 @@ async def chat_completion(payload: ChatRequest, service: ChatService = Depends(s
 @router.get("/roles")
 async def list_roles(service: ChatService = Depends(service_dependency)):
     return {"items": list(service.available_roles())}
+
+
+@router.post("/prompt-optimize")
+async def prompt_optimize(
+    payload: PromptOptimizationRequest, service: ChatService = Depends(service_dependency)
+):
+    try:
+        optimized = service.optimize_prompt(payload.prompt)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    return optimized.model_dump(by_alias=True)
