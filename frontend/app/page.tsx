@@ -65,6 +65,14 @@ export default function HomePage() {
     setActiveConversationId(conversation.id);
   };
 
+  const handleOpenPromptLibrary = useCallback(() => {
+    window.open(
+      "https://learn.microsoft.com/azure/ai-services/openai/how-to/use-prompt-library",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }, []);
+
   const handleSelectConversation = (conversationId: string) => {
     setActiveConversationId(conversationId);
     setError(null);
@@ -234,6 +242,14 @@ export default function HomePage() {
       />
       <section className="chat-area">
         <header className="chat-header">
+          <div className="tool-bar" role="navigation" aria-label="Tools">
+            <span className="tool-bar-label">Tools</span>
+            <div className="tool-bar-actions">
+              <button type="button" className="tool-pill" onClick={handleOpenPromptLibrary}>
+                Prompt library
+              </button>
+            </div>
+          </div>
           <RoleSelector roles={ROLE_PRESETS} activeRoleId={activeConversation.roleId} onRoleChange={handleRoleChange} />
           <div className="toggles">
             <label>
