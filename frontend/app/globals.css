@@ -126,6 +126,37 @@ main.shell {
   background: rgba(255, 255, 255, 0.85);
 }
 
+.tool-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  color: rgba(15, 23, 42, 0.75);
+  font-size: 0.9rem;
+}
+
+.tool-bar-label {
+  font-weight: 600;
+}
+
+.tool-button {
+  background: rgba(79, 70, 239, 0.08);
+  color: #312e81;
+  border: 1px solid rgba(79, 70, 239, 0.2);
+  border-radius: 9999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border 0.2s ease;
+}
+
+.tool-button:hover,
+.tool-button.active {
+  background: rgba(79, 70, 239, 0.18);
+  border-color: rgba(79, 70, 239, 0.45);
+}
+
 .role-selector {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -237,6 +268,89 @@ main.shell {
   outline: none;
   border-color: #4f46ef;
   box-shadow: 0 0 0 2px rgba(79, 70, 239, 0.2);
+}
+
+.tool-panel {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.prompt-optimizer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.prompt-label {
+  font-weight: 600;
+  color: rgba(15, 23, 42, 0.75);
+}
+
+.prompt-input,
+.prompt-output {
+  resize: vertical;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.prompt-optimizer-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.prompt-optimizer-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.prompt-optimizer-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prompt-optimizer-result-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.secondary {
+  background: rgba(15, 23, 42, 0.08);
+  color: #1e293b;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.secondary:not(:disabled):hover {
+  background: rgba(79, 70, 239, 0.15);
+}
+
+.tool-error {
+  margin: 0;
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.12);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
 }
 
 .error {
